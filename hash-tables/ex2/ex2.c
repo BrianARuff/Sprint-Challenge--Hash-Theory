@@ -10,6 +10,28 @@ char **reconstruct_trip(Ticket **tickets, int length)
   char **route = malloc(length * sizeof(char *));
 
   // YOUR CODE HERE
+  for(int i = 0; i < length; i++) {
+    // source as key, destination as value
+    hash_table_insert(ht, tickets[i]->source, tickets[i]->destination);
+  }
+
+  // set to default to NONE
+  char * destination = hash_table_retrieve(ht, "NONE");
+
+  int traveling = 1;
+  int current_route_index = 0;
+
+  while(traveling != 0) {
+    route[current_route_index] = destination;
+    // if none we are at the destination
+    if(strcmp(destination, "NONE") == 0) {
+      traveling = 0;
+    }
+    // change destination
+    destination = hash_table_retrieve(ht, destination);
+    // move index up
+    current_route_index++;
+  }
 
   return route;
 }
